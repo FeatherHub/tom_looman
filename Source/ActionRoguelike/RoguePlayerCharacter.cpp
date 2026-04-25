@@ -1,30 +1,30 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿#include "RoguePlayerCharacter.h"
+
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 
-#include "RoguePlayerCharacter.h"
-
-
-// Sets default values
 ARoguePlayerCharacter::ARoguePlayerCharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
+	SpringArmComponent->SetupAttachment(RootComponent);
+	
+	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
+	CameraComponent->SetupAttachment(SpringArmComponent);
 }
 
-// Called when the game starts or when spawned
 void ARoguePlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
-// Called every frame
 void ARoguePlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-// Called to bind functionality to input
 void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
