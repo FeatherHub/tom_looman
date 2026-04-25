@@ -4,6 +4,8 @@
 #include "GameFramework/Character.h"
 #include "RoguePlayerCharacter.generated.h"
 
+struct FInputActionValue;
+class UInputAction;
 class USpringArmComponent;
 class UCameraComponent;
 
@@ -22,10 +24,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category=Component)
 	TObjectPtr<USpringArmComponent> SpringArmComponent;
 	
-	virtual void BeginPlay() override;
+	UPROPERTY(EditDefaultsOnly, Category=Input)
+	TObjectPtr<UInputAction> IA_Move;
+	
+	UPROPERTY(EditDefaultsOnly, Category=Input)
+	TObjectPtr<UInputAction> IA_Look;
 
+	void Move(const FInputActionValue& InValue);
+	
 public:
-	virtual void Tick(float DeltaTime) override;
-
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };
