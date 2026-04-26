@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "RoguePlayerCharacter.generated.h"
 
+class ARogueProjectileMagic;
 struct FInputActionInstance;
 struct FInputActionValue;
 class UInputAction;
@@ -31,8 +32,19 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category=Input)
 	TObjectPtr<UInputAction> IA_Look;
 
+	UPROPERTY(EditDefaultsOnly, Category=Input)
+	TObjectPtr<UInputAction> IA_PrimaryAttack;
+	
+	UPROPERTY(EditDefaultsOnly, Category=PrimaryAttack)
+	TSubclassOf<ARogueProjectileMagic> ProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly, Category=PrimaryAttack)
+	FName MuzzleSocketName;
+	
 	void Move(const FInputActionValue& InValue);
 	void Look(const FInputActionInstance& InInstance);
+	void PrimaryAttack();
+	
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };
