@@ -35,15 +35,19 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category=Input)
 	TObjectPtr<UInputAction> IA_PrimaryAttack;
 	
-	UPROPERTY(EditDefaultsOnly, Category=PrimaryAttack)
+	UPROPERTY(EditDefaultsOnly, Category=Attack)
 	TSubclassOf<ARogueProjectileMagic> ProjectileClass;
 
-	UPROPERTY(EditDefaultsOnly, Category=PrimaryAttack)
+	UPROPERTY(EditDefaultsOnly, Category=Attack)
 	FName MuzzleSocketName;
+	
+	UPROPERTY(EditDefaultsOnly, Category=Attack)
+	TObjectPtr<UAnimMontage> AnimMontage_Attack;
 	
 	void Move(const FInputActionValue& InValue);
 	void Look(const FInputActionInstance& InInstance);
 	void PrimaryAttack();
+	void PrimaryAttackTimeElapsed();
 	
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
