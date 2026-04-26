@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "RogueProjectileMagic.generated.h"
 
+class UNiagaraSystem;
 class UProjectileMovementComponent;
 class USphereComponent;
 class UNiagaraComponent;
@@ -25,7 +26,15 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category=Component)
 	TObjectPtr<UNiagaraComponent> NiagaraComponent;
 	
+	UPROPERTY(EditDefaultsOnly, Category=Effect)
+	TObjectPtr<UNiagaraSystem> NiagaraSystem;
+	
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	
 public:
 	ARogueProjectileMagic();
 
+	virtual void PostInitializeComponents() override;
+	
 };
