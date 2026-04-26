@@ -19,9 +19,23 @@ void ARoguePlayerCharacter::Move(const FInputActionValue& InValue)
 {
 	FVector2D Value = InValue.Get<FVector2D>();
 
-	FVector Movement = FVector(Value.X, Value.Y, 0.f);
+	FRotator ControlRot = GetControlRotation();
+	ControlRot.Pitch = 0.f;
+	
+	// forward & backward 
+	AddMovementInput(ControlRot.Vector(), Value.X);
 
-	AddMovementInput(Movement);
+	// right & left
+	FVector RightDirection = ControlRot.RotateVector(FVector::RightVector);
+	AddMovementInput(RightDirection, Value.Y);
+}
+
+void ARoguePlayerCharacter::Look(const FInputActionInstance& InInstance)
+{
+	FVector2D Value = InInstance.GetValue().Get<FVector2D>();
+
+	AddControllerYawInput(Value.X);
+	AddControllerPitchInput(Value.Y);
 }
 
 void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -31,5 +45,6 @@ void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 
 	EIC->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ThisClass::Move);
+	EIC->BindAction(IA_Look, ETriggerEvent::Triggered, this, &ThisClass::Look);
 }
 

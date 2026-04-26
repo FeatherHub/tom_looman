@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "RoguePlayerCharacter.generated.h"
 
+struct FInputActionInstance;
 struct FInputActionValue;
 class UInputAction;
 class USpringArmComponent;
@@ -31,7 +32,7 @@ protected:
 	TObjectPtr<UInputAction> IA_Look;
 
 	void Move(const FInputActionValue& InValue);
-	
+	void Look(const FInputActionInstance& InInstance);
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };
