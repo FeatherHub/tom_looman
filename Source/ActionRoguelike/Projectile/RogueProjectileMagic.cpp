@@ -1,7 +1,7 @@
 ﻿#include "RogueProjectileMagic.h"
 
 #include "Components/SphereComponent.h"
-
+#include "NiagaraComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
 ARogueProjectileMagic::ARogueProjectileMagic()
@@ -12,4 +12,7 @@ ARogueProjectileMagic::ARogueProjectileMagic()
 
 	MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComp"));
 	MovementComponent->InitialSpeed = 1000.f;
+
+	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp"));
+	NiagaraComponent->SetupAttachment(SphereComponent);
 }

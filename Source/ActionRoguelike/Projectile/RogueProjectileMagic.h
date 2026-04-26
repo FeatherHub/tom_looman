@@ -8,6 +8,7 @@
 
 class UProjectileMovementComponent;
 class USphereComponent;
+class UNiagaraComponent;
 
 UCLASS()
 class ACTIONROGUELIKE_API ARogueProjectileMagic : public AActor
@@ -20,6 +21,9 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category=Component)
 	TObjectPtr<UProjectileMovementComponent> MovementComponent;
+	
+	UPROPERTY(EditDefaultsOnly, Category=Component)
+	TObjectPtr<UNiagaraComponent> NiagaraComponent;
 	
 public:
 	ARogueProjectileMagic();
