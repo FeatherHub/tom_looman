@@ -3,6 +3,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
+#include "NiagaraFunctionLibrary.h"
+#include "Kismet/GameplayStatics.h"
 #include "Projectile/RogueProjectileMagic.h"
 
 ARoguePlayerCharacter::ARoguePlayerCharacter()
@@ -54,6 +56,10 @@ void ARoguePlayerCharacter::PrimaryAttack()
 {
 	PlayAnimMontage(AnimMontage_Attack);
 	
+	FVector SpawnLocation = GetMesh()->GetSocketLocation(MuzzleSocketName);
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, CastingEffect, SpawnLocation, GetControlRotation(), FVector::OneVector, false);
+	UGameplayStatics::PlaySound2D(this, CastingSound);
+	
 	const float Delay = 0.3f;
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ThisClass::PrimaryAttackTimeElapsed, Delay);
@@ -69,4 +75,7 @@ void ARoguePlayerCharacter::PrimaryAttackTimeElapsed()
 
 	AActor* SpawnedProjectile = GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnLocation, SpawnRotator, SpawnParams);
 	MoveIgnoreActorAdd(SpawnedProjectile);
+
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FireEffect, SpawnLocation);
+	UGameplayStatics::PlaySound2D(this, FireSound);
 }

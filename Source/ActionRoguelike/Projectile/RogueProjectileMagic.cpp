@@ -5,6 +5,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Components/AudioComponent.h"
 
 ARogueProjectileMagic::ARogueProjectileMagic()
 {
@@ -18,6 +19,9 @@ ARogueProjectileMagic::ARogueProjectileMagic()
 	
 	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp"));
 	NiagaraComponent->SetupAttachment(SphereComponent);
+
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
+	AudioComponent->SetupAttachment(SphereComponent);
 }
 
 void ARogueProjectileMagic::PostInitializeComponents()
@@ -34,7 +38,9 @@ void ARogueProjectileMagic::OnHit(UPrimitiveComponent* HitComponent, AActor* Oth
 	TSubclassOf<UDamageType> DamageType = UDamageType::StaticClass();
 
 	UGameplayStatics::ApplyDamage(OtherActor, 10.f, GetInstigatorController(), this, DamageType);
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, NiagaraSystem, GetActorLocation());
+	
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ExplodeNiagaraEffect, GetActorLocation());
+	UGameplayStatics::PlaySound2D(this, ExplodeSoundEffect);
 	
 	Destroy();
 }

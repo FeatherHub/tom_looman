@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "RoguePlayerCharacter.generated.h"
 
+class UNiagaraSystem;
 class ARogueProjectileMagic;
 struct FInputActionInstance;
 struct FInputActionValue;
@@ -43,6 +44,18 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category=Attack)
 	TObjectPtr<UAnimMontage> AnimMontage_Attack;
+	
+	UPROPERTY(EditDefaultsOnly, Category=Attack)
+	TObjectPtr<UNiagaraSystem> CastingEffect;
+	
+	UPROPERTY(EditDefaultsOnly, Category=Attack)
+	TObjectPtr<USoundBase> CastingSound;	
+	
+	UPROPERTY(EditDefaultsOnly, Category=Attack)
+	TObjectPtr<UNiagaraSystem> FireEffect;
+	
+	UPROPERTY(EditDefaultsOnly, Category=Attack)
+	TObjectPtr<USoundBase> FireSound;	
 	
 	void Move(const FInputActionValue& InValue);
 	void Look(const FInputActionInstance& InInstance);

@@ -1,6 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
@@ -25,10 +23,16 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category=Component)
 	TObjectPtr<UNiagaraComponent> NiagaraComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category=Component)
+	TObjectPtr<UAudioComponent> AudioComponent;
 	
 	UPROPERTY(EditDefaultsOnly, Category=Effect)
-	TObjectPtr<UNiagaraSystem> NiagaraSystem;
-	
+	TObjectPtr<UNiagaraSystem> ExplodeNiagaraEffect;
+
+	UPROPERTY(EditDefaultsOnly, Category=Effect)
+	TObjectPtr<USoundBase> ExplodeSoundEffect;
+
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 	
