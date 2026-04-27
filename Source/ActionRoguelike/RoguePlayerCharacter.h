@@ -34,6 +34,9 @@ protected:
 	TObjectPtr<UInputAction> IA_Look;
 
 	UPROPERTY(EditDefaultsOnly, Category=Input)
+	TObjectPtr<UInputAction> IA_Jump;
+	
+	UPROPERTY(EditDefaultsOnly, Category=Input)
 	TObjectPtr<UInputAction> IA_PrimaryAttack;
 	
 	UPROPERTY(EditDefaultsOnly, Category=Attack)
@@ -59,6 +62,7 @@ protected:
 	
 	void Move(const FInputActionValue& InValue);
 	void Look(const FInputActionInstance& InInstance);
+	virtual void Jump() override;
 	void PrimaryAttack();
 	void PrimaryAttackTimeElapsed();
 	

@@ -1,10 +1,15 @@
 ﻿#include "RoguePlayerCharacter.h"
 
 #include "Camera/CameraComponent.h"
+
 #include "GameFramework/SpringArmComponent.h"
+
 #include "EnhancedInputComponent.h"
+
 #include "NiagaraFunctionLibrary.h"
+
 #include "Kismet/GameplayStatics.h"
+
 #include "Projectile/RogueProjectileMagic.h"
 
 ARoguePlayerCharacter::ARoguePlayerCharacter()
@@ -16,6 +21,8 @@ ARoguePlayerCharacter::ARoguePlayerCharacter()
 	
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComponent->SetupAttachment(SpringArmComponent);
+	
+	JumpMaxCount = 2;
 }
 
 void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -26,6 +33,7 @@ void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 	EIC->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ThisClass::Move);
 	EIC->BindAction(IA_Look, ETriggerEvent::Triggered, this, &ThisClass::Look);
+	EIC->BindAction(IA_Jump, ETriggerEvent::Triggered, this, &ThisClass::Jump);
 	EIC->BindAction(IA_PrimaryAttack, ETriggerEvent::Triggered, this, &ThisClass::PrimaryAttack);
 }
 
@@ -50,6 +58,12 @@ void ARoguePlayerCharacter::Look(const FInputActionInstance& InInstance)
 
 	AddControllerYawInput(Value.X);
 	AddControllerPitchInput(Value.Y);
+}
+
+void ARoguePlayerCharacter::Jump()
+{
+	ResetJumpState();
+	Super::Jump();
 }
 
 void ARoguePlayerCharacter::PrimaryAttack()
