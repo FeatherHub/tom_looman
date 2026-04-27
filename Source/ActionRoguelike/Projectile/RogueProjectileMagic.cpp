@@ -35,9 +35,8 @@ void ARogueProjectileMagic::PostInitializeComponents()
 
 void ARogueProjectileMagic::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	TSubclassOf<UDamageType> DamageType = UDamageType::StaticClass();
-
-	UGameplayStatics::ApplyDamage(OtherActor, 10.f, GetInstigatorController(), this, DamageType);
+	FVector HitFromDirection = GetActorRotation().Vector();
+	UGameplayStatics::ApplyPointDamage(OtherActor, 10.f, HitFromDirection, Hit, GetInstigatorController(), this, DamageTypeClass);
 	
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ExplodeNiagaraEffect, GetActorLocation());
 	UGameplayStatics::PlaySound2D(this, ExplodeSoundEffect);

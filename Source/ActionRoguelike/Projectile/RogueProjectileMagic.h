@@ -15,16 +15,16 @@ class ACTIONROGUELIKE_API ARogueProjectileMagic : public AActor
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category=Component)
+	UPROPERTY(VisibleAnywhere, Category=Component)
 	TObjectPtr<USphereComponent> SphereComponent;
 	
-	UPROPERTY(EditDefaultsOnly, Category=Component)
+	UPROPERTY(VisibleAnywhere, Category=Component)
 	TObjectPtr<UProjectileMovementComponent> MovementComponent;
 	
-	UPROPERTY(EditDefaultsOnly, Category=Component)
+	UPROPERTY(VisibleAnywhere, Category=Component)
 	TObjectPtr<UNiagaraComponent> NiagaraComponent;
 
-	UPROPERTY(EditDefaultsOnly, Category=Component)
+	UPROPERTY(VisibleAnywhere, Category=Component)
 	TObjectPtr<UAudioComponent> AudioComponent;
 	
 	UPROPERTY(EditDefaultsOnly, Category=Effect)
@@ -33,6 +33,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category=Effect)
 	TObjectPtr<USoundBase> ExplodeSoundEffect;
 
+	UPROPERTY(EditDefaultsOnly, Category=Damage)
+	TSubclassOf<UDamageType> DamageTypeClass;
+	
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 	
@@ -40,5 +43,4 @@ public:
 	ARogueProjectileMagic();
 
 	virtual void PostInitializeComponents() override;
-	
 };
