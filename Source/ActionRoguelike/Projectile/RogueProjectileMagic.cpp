@@ -9,28 +9,28 @@
 
 ARogueProjectileMagic::ARogueProjectileMagic()
 {
-	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
-	SphereComponent->SetCollisionProfileName("Projectile");
-	RootComponent = SphereComponent;
+	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
+	SphereComp->SetCollisionProfileName("Projectile");
+	RootComponent = SphereComp;
 
-	MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComp"));
-	MovementComponent->InitialSpeed = 1000.f;
-	MovementComponent->ProjectileGravityScale = 0.f;
+	ProjectileMovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComp"));
+	ProjectileMovementComp->InitialSpeed = 1000.f;
+	ProjectileMovementComp->ProjectileGravityScale = 0.f;
 	
-	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp"));
-	NiagaraComponent->SetupAttachment(SphereComponent);
+	NiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp"));
+	NiagaraComp->SetupAttachment(SphereComp);
 
-	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
-	AudioComponent->SetupAttachment(SphereComponent);
+	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
+	AudioComp->SetupAttachment(SphereComp);
 }
 
 void ARogueProjectileMagic::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	SphereComponent->OnComponentHit.AddDynamic(this, &ThisClass::OnHit);
+	SphereComp->OnComponentHit.AddDynamic(this, &ThisClass::OnHit);
 	
-	SphereComponent->IgnoreActorWhenMoving(GetInstigator(), true);
+	SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
 }
 
 void ARogueProjectileMagic::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -38,8 +38,8 @@ void ARogueProjectileMagic::OnHit(UPrimitiveComponent* HitComponent, AActor* Oth
 	FVector HitFromDirection = GetActorRotation().Vector();
 	UGameplayStatics::ApplyPointDamage(OtherActor, 10.f, HitFromDirection, Hit, GetInstigatorController(), this, DamageTypeClass);
 	
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ExplodeNiagaraEffect, GetActorLocation());
-	UGameplayStatics::PlaySound2D(this, ExplodeSoundEffect);
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ExplosionNiagaraEffect, GetActorLocation());
+	UGameplayStatics::PlaySound2D(this, ExplosionSoundEffect);
 	
 	Destroy();
 }

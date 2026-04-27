@@ -16,22 +16,22 @@ class ACTIONROGUELIKE_API ARogueProjectileMagic : public AActor
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category=Component)
-	TObjectPtr<USphereComponent> SphereComponent;
+	TObjectPtr<USphereComponent> SphereComp;
 	
 	UPROPERTY(VisibleAnywhere, Category=Component)
-	TObjectPtr<UProjectileMovementComponent> MovementComponent;
+	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComp;
 	
 	UPROPERTY(VisibleAnywhere, Category=Component)
-	TObjectPtr<UNiagaraComponent> NiagaraComponent;
+	TObjectPtr<UNiagaraComponent> NiagaraComp;
 
 	UPROPERTY(VisibleAnywhere, Category=Component)
-	TObjectPtr<UAudioComponent> AudioComponent;
+	TObjectPtr<UAudioComponent> AudioComp;
 	
 	UPROPERTY(EditDefaultsOnly, Category=Effect)
-	TObjectPtr<UNiagaraSystem> ExplodeNiagaraEffect;
+	TObjectPtr<UNiagaraSystem> ExplosionNiagaraEffect;
 
 	UPROPERTY(EditDefaultsOnly, Category=Effect)
-	TObjectPtr<USoundBase> ExplodeSoundEffect;
+	TObjectPtr<USoundBase> ExplosionSoundEffect;
 
 	UPROPERTY(EditDefaultsOnly, Category=Damage)
 	TSubclassOf<UDamageType> DamageTypeClass;
