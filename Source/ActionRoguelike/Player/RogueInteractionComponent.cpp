@@ -12,10 +12,18 @@ URogueInteractionComponent::URogueInteractionComponent()
 
 void URogueInteractionComponent::Interact()
 {
-	IRogueInteractionInterface* InteractionInterface = Cast<IRogueInteractionInterface>(SelectedActor);
-	if (InteractionInterface)
+	// To call purely C++ interface
+	// IRogueInteractionInterface* InteractionInterface = Cast<IRogueInteractionInterface>(SelectedActor);
+	// if (InteractionInterface)
+	// {
+	// 	InteractionInterface->Interact();
+	// }
+	
+	
+	// To call BlueprintNativeEvent interface
+	if (SelectedActor)
 	{
-		InteractionInterface->Interact();
+		IRogueInteractionInterface::Execute_Interact(SelectedActor);
 	}
 }
 
