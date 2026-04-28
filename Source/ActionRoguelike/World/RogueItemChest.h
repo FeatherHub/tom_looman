@@ -28,6 +28,8 @@ protected:
 protected:
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnItemChestOpenAnimationComplete();
 public:
 	ARogueItemChest();
 	virtual void Tick(float DeltaTime) override;

@@ -18,12 +18,14 @@ ARogueItemChest::ARogueItemChest()
 void ARogueItemChest::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AnimationPitchCurrent = LidMeshComp->GetRelativeRotation().Pitch;
 }
 
 void ARogueItemChest::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 	FRotator NewRotator = FMath::RInterpConstantTo(FRotator{AnimationPitchCurrent, 0.f, 0.f}, FRotator{AnimationPitchMax, 0.f, 0.f}, DeltaTime, AnimationPitchSpeed);
 	AnimationPitchCurrent = NewRotator.Pitch;
 
@@ -32,6 +34,7 @@ void ARogueItemChest::Tick(float DeltaTime)
 	if (FMath::IsNearlyEqual(AnimationPitchCurrent, AnimationPitchMax))
 	{
 		SetActorTickEnabled(false);
+		OnItemChestOpenAnimationComplete();
 	}
 }
 
