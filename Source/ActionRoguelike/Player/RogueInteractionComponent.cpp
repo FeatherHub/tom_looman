@@ -1,11 +1,21 @@
 ﻿#include "RogueInteractionComponent.h"
 
+#include "Core/RogueInteractionInterface.h"
 #include "Engine/OverlapResult.h"
 
 
 URogueInteractionComponent::URogueInteractionComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+}
+
+void URogueInteractionComponent::Interact()
+{
+	IRogueInteractionInterface* InteractionInterface = Cast<IRogueInteractionInterface>(SelectedActor);
+	if (InteractionInterface)
+	{
+		InteractionInterface->Interact();
+	}
 }
 
 void URogueInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -22,7 +32,7 @@ void URogueInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickT
 
 	const float DEBUG_BOX_EXTENT = 50.f;
 	
-	float BestDotResult = -1;
+	float HighestDotResult = -1;
 	AActor* BestActor = nullptr;
 	
 	for (FOverlapResult& Overlap : Overlaps)
@@ -34,9 +44,9 @@ void URogueInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickT
 		
 		float DotResult = FVector::DotProduct(ControllerDirection, TargetDirection);
 
-		if (DotResult > BestDotResult)
+		if (DotResult > HighestDotResult)
 		{
-			BestDotResult = DotResult;
+			HighestDotResult = DotResult;
 			BestActor = Overlap.GetActor();
 		}		
 		
@@ -49,6 +59,7 @@ void URogueInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickT
 	{
 		DrawDebugBox(GetWorld(), BestActor->GetActorLocation(), FVector{DEBUG_BOX_EXTENT + 10.f}, FColor::Green, false);
 	}
+	SelectedActor = BestActor;
 	
 	DrawDebugSphere(GetWorld(), PlayerLocation, InteractionRadius, 16.f, FColor::White, false);
 }

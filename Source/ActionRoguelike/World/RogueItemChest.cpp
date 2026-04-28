@@ -16,8 +16,6 @@ ARogueItemChest::ARogueItemChest()
 void ARogueItemChest::BeginPlay()
 {
 	Super::BeginPlay();
-
-	PrimaryActorTick.SetTickFunctionEnable(true);
 }
 
 void ARogueItemChest::Tick(float DeltaTime)
@@ -31,6 +29,11 @@ void ARogueItemChest::Tick(float DeltaTime)
 	
 	if (FMath::IsNearlyEqual(AnimationPitchCurrent, AnimationPitchMax))
 	{
-		PrimaryActorTick.SetTickFunctionEnable(false);
+		SetActorTickEnabled(false);
 	}
+}
+
+void ARogueItemChest::Interact()
+{
+	SetActorTickEnabled(true);
 }

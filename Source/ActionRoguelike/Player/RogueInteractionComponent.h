@@ -1,6 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
@@ -16,8 +14,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category=Interaction)
 	float InteractionRadius = 800.f;
 	
+	UPROPERTY()
+	TObjectPtr<AActor> SelectedActor;
+	
 public:
 	URogueInteractionComponent();
+	void Interact();
 	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 };
