@@ -1,5 +1,6 @@
 ﻿#include "RogueInteractionComponent.h"
 
+#include "Core/RogueGameType.h"
 #include "Core/RogueInteractionInterface.h"
 #include "Engine/OverlapResult.h"
 
@@ -28,8 +29,8 @@ void URogueInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickT
 	TArray<FOverlapResult> Overlaps;
 	FCollisionShape CollisionShape;
 	CollisionShape.SetSphere(InteractionRadius);
-	GetWorld()->OverlapMultiByChannel(Overlaps, PlayerLocation, FQuat::Identity,  ECC_Visibility, CollisionShape);
-
+	GetWorld()->OverlapMultiByChannel(Overlaps, PlayerLocation, FQuat::Identity,  COLLISION_INTERACTION, CollisionShape);
+	
 	const float DEBUG_BOX_EXTENT = 50.f;
 	
 	float HighestDotResult = -1;
