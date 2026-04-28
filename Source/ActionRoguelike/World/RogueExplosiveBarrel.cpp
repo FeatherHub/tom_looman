@@ -54,6 +54,6 @@ void ARogueExplosiveBarrel::Explode()
 	
 	ExplodeRadialForceComp->FireImpulse();
 	
-	//@Todo: add more upward impulse
-	BoxShapeComp->AddImpulse(FVector::UpVector * ExplodeRadialForceComp->ImpulseStrength);
+	BoxShapeComp->AddImpulse(FVector::UpVector * 1000.f, NAME_None, true);
+	BoxShapeComp->AddAngularImpulseInDegrees(FVector::RightVector * 100.f, NAME_None, true);
 }
