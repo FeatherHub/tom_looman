@@ -1,16 +1,10 @@
 ﻿#include "RoguePlayerCharacter.h"
 
 #include "Camera/CameraComponent.h"
-
 #include "GameFramework/SpringArmComponent.h"
-
 #include "EnhancedInputComponent.h"
-
 #include "NiagaraFunctionLibrary.h"
-
 #include "Kismet/GameplayStatics.h"
-
-#include "Projectile/RogueProjectileMagic.h"
 
 ARoguePlayerCharacter::ARoguePlayerCharacter()
 {
@@ -36,6 +30,7 @@ void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	EIC->BindAction(IA_Jump, ETriggerEvent::Triggered, this, &ThisClass::Jump);
 	EIC->BindAction(IA_PrimaryAttack, ETriggerEvent::Triggered, this, &ThisClass::PrimaryAttack);
 	EIC->BindAction(IA_BlackholeAttack, ETriggerEvent::Triggered, this, &ThisClass::BlackholeAttack);
+	EIC->BindAction(IA_Teleport, ETriggerEvent::Triggered, this, &ThisClass::Teleport);
 }
 
 void ARoguePlayerCharacter::Move(const FInputActionValue& InValue)
@@ -63,7 +58,6 @@ void ARoguePlayerCharacter::Look(const FInputActionInstance& InInstance)
 
 void ARoguePlayerCharacter::Jump()
 {
-	ResetJumpState();
 	Super::Jump();
 }
 
@@ -104,5 +98,17 @@ void ARoguePlayerCharacter::BlackholeAttack()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	AActor* SpawnedProjectile = GetWorld()->SpawnActor<AActor>(ProjectileBlackholeClass, SpawnLocation, SpawnRotator, SpawnParams);
+	MoveIgnoreActorAdd(SpawnedProjectile);
+}
+
+void ARoguePlayerCharacter::Teleport()
+{
+	FVector SpawnLocation = GetMesh()->GetSocketLocation(MuzzleSocketName);
+	FRotator SpawnRotator = GetControlRotation();
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Instigator = this;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	AActor* SpawnedProjectile = GetWorld()->SpawnActor<AActor>(ProjectileTeleportClass, SpawnLocation, SpawnRotator, SpawnParams);
 	MoveIgnoreActorAdd(SpawnedProjectile);
 }

@@ -31,6 +31,7 @@ void ARogueProjectileTeleport::PostInitializeComponents()
 	Super::PostInitializeComponents();
 	
 	SphereComp->OnComponentHit.AddDynamic(this, &ThisClass::OnHit);
+	SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
 }
 
 void ARogueProjectileTeleport::BeginPlay()
