@@ -32,7 +32,13 @@ void URogueInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickT
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	APlayerController* PC = CastChecked<APlayerController>(GetOwner());
-	FVector PlayerLocation = PC->GetPawn()->GetActorLocation();
+	APawn* PlayerPawn = PC->GetPawn();
+	if (!IsValid(PlayerPawn))
+	{
+		return;
+	}
+	
+	FVector PlayerLocation = PlayerPawn->GetActorLocation();
 	
 	TArray<FOverlapResult> Overlaps;
 	FCollisionShape CollisionShape;

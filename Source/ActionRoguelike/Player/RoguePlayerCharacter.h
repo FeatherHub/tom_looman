@@ -39,9 +39,15 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category=Input)
 	TObjectPtr<UInputAction> IA_PrimaryAttack;
 	
+	UPROPERTY(EditDefaultsOnly, Category=Input)
+	TObjectPtr<UInputAction> IA_BlackholeAttack;
+	
 	UPROPERTY(EditDefaultsOnly, Category=Attack)
-	TSubclassOf<ARogueProjectileMagic> ProjectileClass;
+	TSubclassOf<AActor> ProjectileMagicClass;
 
+	UPROPERTY(EditDefaultsOnly, Category=Attack)
+	TSubclassOf<AActor> ProjectileBlackholeClass;
+	
 	UPROPERTY(EditDefaultsOnly, Category=Attack)
 	FName MuzzleSocketName;
 	
@@ -65,6 +71,7 @@ protected:
 	virtual void Jump() override;
 	void PrimaryAttack();
 	void PrimaryAttackTimeElapsed();
+	void BlackholeAttack();
 	
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

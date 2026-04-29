@@ -34,6 +34,7 @@ void ARogueProjectileBlackhole::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnBeginOverlap);
+	SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
 }
 
 void ARogueProjectileBlackhole::BeginPlay()

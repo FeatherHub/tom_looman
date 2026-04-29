@@ -35,6 +35,7 @@ void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	EIC->BindAction(IA_Look, ETriggerEvent::Triggered, this, &ThisClass::Look);
 	EIC->BindAction(IA_Jump, ETriggerEvent::Triggered, this, &ThisClass::Jump);
 	EIC->BindAction(IA_PrimaryAttack, ETriggerEvent::Triggered, this, &ThisClass::PrimaryAttack);
+	EIC->BindAction(IA_BlackholeAttack, ETriggerEvent::Triggered, this, &ThisClass::BlackholeAttack);
 }
 
 void ARoguePlayerCharacter::Move(const FInputActionValue& InValue)
@@ -87,9 +88,21 @@ void ARoguePlayerCharacter::PrimaryAttackTimeElapsed()
 	SpawnParams.Instigator = this;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	AActor* SpawnedProjectile = GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnLocation, SpawnRotator, SpawnParams);
+	AActor* SpawnedProjectile = GetWorld()->SpawnActor<AActor>(ProjectileMagicClass, SpawnLocation, SpawnRotator, SpawnParams);
 	MoveIgnoreActorAdd(SpawnedProjectile);
 
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FireEffect, SpawnLocation);
 	UGameplayStatics::PlaySound2D(this, FireSound);
+}
+
+void ARoguePlayerCharacter::BlackholeAttack()
+{
+	FVector SpawnLocation = GetMesh()->GetSocketLocation(MuzzleSocketName);
+	FRotator SpawnRotator = GetControlRotation();
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Instigator = this;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	AActor* SpawnedProjectile = GetWorld()->SpawnActor<AActor>(ProjectileBlackholeClass, SpawnLocation, SpawnRotator, SpawnParams);
+	MoveIgnoreActorAdd(SpawnedProjectile);
 }
