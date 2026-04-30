@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "RoguePlayerCharacter.generated.h"
 
+class URogueActionSystemComponent;
 class ARogueProjectileBase;
 class UNiagaraSystem;
 class ARogueProjectileMagic;
@@ -23,10 +24,13 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category=Component)
-	TObjectPtr<UCameraComponent> CameraComponent;
+	TObjectPtr<UCameraComponent> CameraComp;
 
 	UPROPERTY(VisibleAnywhere, Category=Component)
-	TObjectPtr<USpringArmComponent> SpringArmComponent;
+	TObjectPtr<USpringArmComponent> SpringArmComp;
+	
+	UPROPERTY(VisibleAnywhere, Category=Action)
+	TObjectPtr<URogueActionSystemComponent> ActionSystemComp;
 	
 	UPROPERTY(EditDefaultsOnly, Category=Input)
 	TObjectPtr<UInputAction> IA_Move;
@@ -75,4 +79,5 @@ protected:
 	
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 };

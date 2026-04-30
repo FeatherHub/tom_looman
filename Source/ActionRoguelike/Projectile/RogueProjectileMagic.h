@@ -15,6 +15,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category=Damage)
 	TSubclassOf<UDamageType> DamageTypeClass;
 
+	UPROPERTY(EditDefaultsOnly, Category=Damage)
+	float DamageAmount;
+	
 	virtual void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) override;
 public:
 
