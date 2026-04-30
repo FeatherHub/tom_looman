@@ -47,7 +47,7 @@ protected:
 	TObjectPtr<UInputAction> IA_Teleport;
 	
 	UPROPERTY(EditDefaultsOnly, Category=Attack)
-	TSubclassOf<AActor> ProjectileMagicClass;
+	TSubclassOf<ARogueProjectileBase> ProjectileMagicClass;
 
 	UPROPERTY(EditDefaultsOnly, Category=Attack)
 	TSubclassOf<ARogueProjectileBase> ProjectileBlackholeClass;
@@ -66,12 +66,6 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category=Attack)
 	TObjectPtr<USoundBase> CastingSound;	
-	
-	UPROPERTY(EditDefaultsOnly, Category=Attack)
-	TObjectPtr<UNiagaraSystem> FireEffect;
-	
-	UPROPERTY(EditDefaultsOnly, Category=Attack)
-	TObjectPtr<USoundBase> FireSound;	
 	
 	void Move(const FInputActionValue& InValue);
 	void Look(const FInputActionInstance& InInstance);

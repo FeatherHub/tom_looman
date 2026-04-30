@@ -85,9 +85,6 @@ void ARoguePlayerCharacter::PrimaryAttackTimeElapsed()
 
 	AActor* SpawnedProjectile = GetWorld()->SpawnActor<AActor>(ProjectileMagicClass, SpawnLocation, SpawnRotator, SpawnParams);
 	MoveIgnoreActorAdd(SpawnedProjectile);
-
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FireEffect, SpawnLocation);
-	UGameplayStatics::PlaySound2D(this, FireSound);
 }
 
 void ARoguePlayerCharacter::BlackholeAttack()

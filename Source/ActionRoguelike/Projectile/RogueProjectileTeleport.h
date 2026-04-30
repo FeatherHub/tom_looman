@@ -5,7 +5,7 @@
 #include "GameFramework/Actor.h"
 #include "RogueProjectileTeleport.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class ACTIONROGUELIKE_API ARogueProjectileTeleport : public ARogueProjectileBase
 {
 	GENERATED_BODY()
