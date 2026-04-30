@@ -5,6 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "ActionSystem/RogueActionSystemComponent.h"
+#include "GameFramework/PawnMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Projectile/RogueProjectileBase.h"
 
@@ -23,6 +24,14 @@ ARoguePlayerCharacter::ARoguePlayerCharacter()
 	JumpMaxCount = 2;
 	
 	AttackDelay = 0.2f;
+}
+
+
+void ARoguePlayerCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	ActionSystemComp->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
 }
 
 void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -92,6 +101,18 @@ void ARoguePlayerCharacter::SpawnProjectile(TSubclassOf<ARogueProjectileBase> Pr
 
 	AActor* SpawnedProjectile = GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnLocation, SpawnRotator, SpawnParams);
 	MoveIgnoreActorAdd(SpawnedProjectile);
+}
+
+void ARoguePlayerCharacter::OnHealthChanged(float NewHealth, float OldHealth)
+{
+	if (NewHealth <= 0.f)
+	{
+		PlayAnimMontage(AnimMontage_Death);
+
+		DisableInput(nullptr);
+		
+		GetMovementComponent()->Deactivate();
+	}
 }
 
 float ARoguePlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)

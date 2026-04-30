@@ -64,7 +64,10 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category=Attack)
 	TObjectPtr<UAnimMontage> AnimMontage_Attack;
-	
+
+	UPROPERTY(EditDefaultsOnly, Category=Death)
+	TObjectPtr<UAnimMontage> AnimMontage_Death;
+
 	UPROPERTY(EditDefaultsOnly, Category=Attack)
 	TObjectPtr<UNiagaraSystem> CastingEffect;
 	
@@ -81,7 +84,12 @@ protected:
 	void StartSpawn(TSubclassOf<ARogueProjectileBase> ProjectileClass);
 	void SpawnProjectile(TSubclassOf<ARogueProjectileBase> ProjectileClass);
 	
+	
+	UFUNCTION()
+	void OnHealthChanged(float NewHealth, float OldHealth);
+	
 public:
+	virtual void PostInitializeComponents() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 };
