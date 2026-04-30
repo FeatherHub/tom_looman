@@ -43,7 +43,7 @@ void URogueInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickT
 	TArray<FOverlapResult> Overlaps;
 	FCollisionShape CollisionShape;
 	CollisionShape.SetSphere(InteractionRadius);
-	GetWorld()->OverlapMultiByChannel(Overlaps, PlayerLocation, FQuat::Identity,  COLLISION_INTERACTION, CollisionShape);
+	GetWorld()->OverlapMultiByChannel(Overlaps, PlayerLocation, FQuat::Identity,  RogueCollision::Trace::Interaction, CollisionShape);
 	
 	const float DEBUG_BOX_EXTENT = 50.f;
 	

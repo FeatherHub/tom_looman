@@ -6,11 +6,12 @@
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Components/AudioComponent.h"
+#include "Core/RogueGameType.h"
 
 ARogueProjectileMagic::ARogueProjectileMagic()
 {
 	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
-	SphereComp->SetCollisionProfileName("Projectile");
+	SphereComp->SetCollisionProfileName(RogueCollision::Profile::Projectile);
 	RootComponent = SphereComp;
 
 	ProjectileMovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComp"));

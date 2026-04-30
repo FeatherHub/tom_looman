@@ -3,6 +3,7 @@
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Components/SphereComponent.h"
+#include "Core/RogueGameType.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -16,8 +17,7 @@ ARogueProjectileTeleport::ARogueProjectileTeleport()
 	RootComponent = SphereComp;
 	InFlightNiagaraComp->SetupAttachment(SphereComp);
 
-	SphereComp->SetCollisionProfileName("Projectile");
-	
+	SphereComp->SetCollisionProfileName(RogueCollision::Profile::Projectile);
 	InFlightNiagaraComp->bAutoActivate = true;
 	
 	MovementComp->InitialSpeed = 500.f;
