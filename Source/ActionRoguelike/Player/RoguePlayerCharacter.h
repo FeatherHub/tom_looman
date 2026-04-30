@@ -70,11 +70,15 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category=Attack)
 	TObjectPtr<USoundBase> CastingSound;	
+
+	UPROPERTY(EditDefaultsOnly, Category=Attack)
+	float AttackDelay;
 	
+protected:
 	void Move(const FInputActionValue& InValue);
 	void Look(const FInputActionInstance& InInstance);
 	virtual void Jump() override;
-	void PrimaryAttack();
+	void StartSpawn(TSubclassOf<ARogueProjectileBase> ProjectileClass);
 	void SpawnProjectile(TSubclassOf<ARogueProjectileBase> ProjectileClass);
 	
 public:

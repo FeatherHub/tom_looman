@@ -21,6 +21,8 @@ ARoguePlayerCharacter::ARoguePlayerCharacter()
 	CameraComp->SetupAttachment(SpringArmComp);
 	
 	JumpMaxCount = 2;
+	
+	AttackDelay = 0.2f;
 }
 
 void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -32,9 +34,9 @@ void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	EIC->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ThisClass::Move);
 	EIC->BindAction(IA_Look, ETriggerEvent::Triggered, this, &ThisClass::Look);
 	EIC->BindAction(IA_Jump, ETriggerEvent::Triggered, this, &ThisClass::Jump);
-	EIC->BindAction(IA_PrimaryAttack, ETriggerEvent::Triggered, this, &ThisClass::PrimaryAttack);
-	EIC->BindAction(IA_BlackholeAttack, ETriggerEvent::Triggered, this, &ThisClass::SpawnProjectile, ProjectileBlackholeClass);
-	EIC->BindAction(IA_Teleport, ETriggerEvent::Triggered, this, &ThisClass::SpawnProjectile, ProjectileTeleportClass);
+	EIC->BindAction(IA_PrimaryAttack, ETriggerEvent::Triggered, this, &ThisClass::StartSpawn, ProjectileMagicClass);
+	EIC->BindAction(IA_BlackholeAttack, ETriggerEvent::Triggered, this, &ThisClass::StartSpawn, ProjectileBlackholeClass);
+	EIC->BindAction(IA_Teleport, ETriggerEvent::Triggered, this, &ThisClass::StartSpawn, ProjectileTeleportClass);
 }
 
 void ARoguePlayerCharacter::Move(const FInputActionValue& InValue)
@@ -65,7 +67,7 @@ void ARoguePlayerCharacter::Jump()
 	Super::Jump();
 }
 
-void ARoguePlayerCharacter::PrimaryAttack()
+void ARoguePlayerCharacter::StartSpawn(TSubclassOf<ARogueProjectileBase> ProjectileClass)
 {
 	PlayAnimMontage(AnimMontage_Attack);
 	
@@ -73,13 +75,11 @@ void ARoguePlayerCharacter::PrimaryAttack()
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, CastingEffect, SpawnLocation, GetControlRotation(), FVector::OneVector, false);
 	UGameplayStatics::PlaySound2D(this, CastingSound);
 	
-	const float Delay = 0.3f;
-
 	FTimerHandle TimerHandle;
 	FTimerDelegate TimerDelegate;
-	TimerDelegate.BindUObject(this, &ThisClass::SpawnProjectile, ProjectileMagicClass);
+	TimerDelegate.BindUObject(this, &ThisClass::SpawnProjectile, ProjectileClass);
 		
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, Delay, false);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, AttackDelay, false);
 }
 
 void ARoguePlayerCharacter::SpawnProjectile(TSubclassOf<ARogueProjectileBase> ProjectileClass)
