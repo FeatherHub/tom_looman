@@ -10,5 +10,6 @@ namespace RogueCollision
 	namespace Profile
 	{
 		inline const FName Projectile = FName(TEXT("Projectile"));
+		inline const FName OverlapAll = FName(TEXT("OverlapAll"));
 	}
 }

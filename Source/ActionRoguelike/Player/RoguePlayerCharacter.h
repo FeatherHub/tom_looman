@@ -53,7 +53,7 @@ protected:
 	TSubclassOf<ARogueProjectileBase> ProjectileBlackholeClass;
 	
 	UPROPERTY(EditDefaultsOnly, Category=Attack)
-	TSubclassOf<AActor> ProjectileTeleportClass;
+	TSubclassOf<ARogueProjectileBase> ProjectileTeleportClass;
 	
 	UPROPERTY(EditDefaultsOnly, Category=Attack)
 	FName MuzzleSocketName;

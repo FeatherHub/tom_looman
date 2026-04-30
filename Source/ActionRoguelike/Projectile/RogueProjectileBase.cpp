@@ -4,6 +4,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Components/AudioComponent.h"
 #include "Components/SphereComponent.h"
+#include "Core/RogueGameType.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -17,6 +18,8 @@ ARogueProjectileBase::ARogueProjectileBase()
 	
 	RootComponent = SphereComp;
 
+	SphereComp->SetCollisionProfileName(RogueCollision::Profile::Projectile);
+	
 	InFlightAudioComp->SetupAttachment(SphereComp);
 	InFlightNiagaraComp->SetupAttachment(SphereComp);
 	

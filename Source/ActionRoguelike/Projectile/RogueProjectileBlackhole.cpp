@@ -1,6 +1,7 @@
 ﻿#include "RogueProjectileBlackhole.h"
 
 #include "Components/SphereComponent.h"
+#include "Core/RogueGameType.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "PhysicsEngine/RadialForceComponent.h"
 
@@ -13,7 +14,10 @@ ARogueProjectileBlackhole::ARogueProjectileBlackhole()
 	BlackholeRadialForceComp->ForceStrength = -10000000;
 	
 	BlackholeLifeTime = 1.f;
+	
 	MovementComp->InitialSpeed = 600.f;
+
+	SphereComp->SetCollisionProfileName(RogueCollision::Profile::OverlapAll);
 }
 
 void ARogueProjectileBlackhole::PostInitializeComponents()
