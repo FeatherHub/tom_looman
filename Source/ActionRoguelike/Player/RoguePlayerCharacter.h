@@ -71,9 +71,7 @@ protected:
 	void Look(const FInputActionInstance& InInstance);
 	virtual void Jump() override;
 	void PrimaryAttack();
-	void PrimaryAttackTimeElapsed();
-	void BlackholeAttack();
-	void Teleport();
+	void SpawnProjectile(TSubclassOf<ARogueProjectileBase> ProjectileClass);
 	
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
