@@ -29,7 +29,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category=Component)
 	TObjectPtr<USpringArmComponent> SpringArmComp;
 	
-	UPROPERTY(VisibleAnywhere, Category=Action)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Action)
 	TObjectPtr<URogueActionSystemComponent> ActionSystemComp;
 	
 	UPROPERTY(EditDefaultsOnly, Category=Input)

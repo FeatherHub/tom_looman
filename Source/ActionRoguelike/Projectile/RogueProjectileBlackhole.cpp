@@ -6,6 +6,8 @@
 #include "PhysicsEngine/RadialForceComponent.h"
 
 
+// @Todo: Exclude Instigator from RadialForce Affection List 
+
 ARogueProjectileBlackhole::ARogueProjectileBlackhole()
 {
 	BlackholeRadialForceComp = CreateDefaultSubobject<URadialForceComponent>(TEXT("BlackholdRadialForceComp"));
