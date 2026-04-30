@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "RoguePlayerCharacter.generated.h"
 
+class ARogueProjectileBase;
 class UNiagaraSystem;
 class ARogueProjectileMagic;
 struct FInputActionInstance;
@@ -49,7 +50,7 @@ protected:
 	TSubclassOf<AActor> ProjectileMagicClass;
 
 	UPROPERTY(EditDefaultsOnly, Category=Attack)
-	TSubclassOf<AActor> ProjectileBlackholeClass;
+	TSubclassOf<ARogueProjectileBase> ProjectileBlackholeClass;
 	
 	UPROPERTY(EditDefaultsOnly, Category=Attack)
 	TSubclassOf<AActor> ProjectileTeleportClass;

@@ -3,52 +3,31 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "RogueProjectileBase.h"
 #include "GameFramework/Actor.h"
 #include "RogueProjectileBlackhole.generated.h"
 
 class URadialForceComponent;
-class UNiagaraSystem;
-class UNiagaraComponent;
-class UProjectileMovementComponent;
-class USphereComponent;
-class USoundBase;
-class UAudioComponent;
 
 UCLASS()
-class ACTIONROGUELIKE_API ARogueProjectileBlackhole : public AActor
+class ACTIONROGUELIKE_API ARogueProjectileBlackhole : public ARogueProjectileBase
 {
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(VisibleAnywhere, Category=Component)
-	TObjectPtr<USphereComponent> SphereComp;
-	
-	UPROPERTY(VisibleAnywhere, Category=Component)
-	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComp;
-	
-	UPROPERTY(VisibleAnywhere, Category="Component|Effect")
-	TObjectPtr<UNiagaraComponent> InFlightNiagaraComp;
-
-	UPROPERTY(VisibleAnywhere, Category="Component|Effect")
-	TObjectPtr<UAudioComponent> InFlightAudioComp;
-	
-	UPROPERTY(EditDefaultsOnly, Category=Effect)
-	TObjectPtr<UNiagaraSystem> ExplosionNiagaraEffect;
-
-	UPROPERTY(EditDefaultsOnly, Category=Effect)
-	TObjectPtr<USoundBase> ExplosionSoundEffect;
-
-	UPROPERTY(EditDefaultsOnly, Category="Effect|Attack")
+	UPROPERTY(EditDefaultsOnly, Category="Attack")
 	TObjectPtr<URadialForceComponent> BlackholeRadialForceComp;
 	
+	UPROPERTY(EditDefaultsOnly, Category="Attack")
+	float BlackholeLifeTime;
+	
 protected:
-	void OnExplode();
+	virtual void BeginPlay() override;
+	virtual void Explode() override;
 	
 public:
 	ARogueProjectileBlackhole();
 	virtual void PostInitializeComponents() override;
-	virtual void BeginPlay() override;
 	
-	UFUNCTION()
-	void OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult );
+	virtual void OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 };

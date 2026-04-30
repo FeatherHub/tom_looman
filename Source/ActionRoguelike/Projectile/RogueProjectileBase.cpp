@@ -37,3 +37,10 @@ void ARogueProjectileBase::BeginPlay()
 	UGameplayStatics::PlaySoundAtLocation(this, SpawnSoundEffect, GetActorLocation(), GetActorRotation());
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, SpawnNiagaraEffect, GetActorLocation(), GetActorRotation());
 }
+
+
+void ARogueProjectileBase::Explode()
+{
+	UGameplayStatics::PlaySoundAtLocation(this, ExplosionSoundEffect, GetActorLocation(), GetActorRotation());
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ExplosionNiagaraEffect, GetActorLocation(), GetActorRotation());
+}

@@ -5,6 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "Projectile/RogueProjectileBase.h"
 
 ARoguePlayerCharacter::ARoguePlayerCharacter()
 {
