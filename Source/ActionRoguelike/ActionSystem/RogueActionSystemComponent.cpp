@@ -3,7 +3,11 @@
 
 void URogueActionSystemComponent::ApplyHealthChange(float InHealthDelta)
 {
-	AttributeSet.Health += InHealthDelta;
+	float OldHealth = AttributeSet.Health; 
 	
-	UE_LOG(LogTemp, Log, TEXT("New Health: %f, Delta: %f"), AttributeSet.Health, InHealthDelta);
+	AttributeSet.Health += InHealthDelta;
+
+	OnHealthChanged.Broadcast(AttributeSet.Health, OldHealth);
+	
+	UE_LOG(LogTemp, Log, TEXT("[HEALTH] New: %-6.1f, Old: %-6.1f, Delta: %-6.1f"), AttributeSet.Health, OldHealth, InHealthDelta);
 }

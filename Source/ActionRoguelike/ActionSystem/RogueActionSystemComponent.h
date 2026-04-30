@@ -16,11 +16,17 @@ struct FAttributeSet
 	float Health;
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, NewHealth, float, OldHealth);
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class ACTIONROGUELIKE_API URogueActionSystemComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
+public:
+	UPROPERTY(BlueprintAssignable, Category=Attribute)
+	FOnHealthChanged OnHealthChanged;
+	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Attribute)
 	FAttributeSet AttributeSet;
