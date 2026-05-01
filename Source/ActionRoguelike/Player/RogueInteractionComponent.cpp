@@ -5,6 +5,9 @@
 #include "Engine/OverlapResult.h"
 
 
+TAutoConsoleVariable<bool> CVarInteractionDebugDraw{TEXT("rogue.interaction.Debugdraw"), false, TEXT("Enable interation debug draw. (0 = Off, 1 = On)"), ECVF_Cheat};
+const float DEBUG_BOX_EXTENT = 50.f;
+
 URogueInteractionComponent::URogueInteractionComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -45,7 +48,7 @@ void URogueInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickT
 	CollisionShape.SetSphere(InteractionRadius);
 	GetWorld()->OverlapMultiByChannel(Overlaps, PlayerLocation, FQuat::Identity,  RogueCollision::Trace::Interaction, CollisionShape);
 	
-	const float DEBUG_BOX_EXTENT = 50.f;
+	const bool bDebugEnabled = CVarInteractionDebugDraw.GetValueOnGameThread();
 	
 	float HighestDotResult = -1;
 	AActor* BestActor = nullptr;
@@ -65,17 +68,24 @@ void URogueInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickT
 			BestActor = Overlap.GetActor();
 		}		
 		
-		DrawDebugBox(GetWorld(), OverlapLocation, FVector{DEBUG_BOX_EXTENT}, FColor::Red, false);
-		FString DebugString = FString::Printf(TEXT("%f"), DotResult);
-		DrawDebugString(GetWorld(), OverlapLocation, DebugString, nullptr, FColor::White, 0, true);
+		if (bDebugEnabled)
+		{
+			DrawDebugBox(GetWorld(), OverlapLocation, FVector{DEBUG_BOX_EXTENT}, FColor::Red, false);
+			FString DebugString = FString::Printf(TEXT("%f"), DotResult);
+			DrawDebugString(GetWorld(), OverlapLocation, DebugString, nullptr, FColor::White, 0, true);
+		}
 	}	
 	
-	if (BestActor)
-	{
-		DrawDebugBox(GetWorld(), BestActor->GetActorLocation(), FVector{DEBUG_BOX_EXTENT + 10.f}, FColor::Green, false);
-	}
 	SelectedActor = BestActor;
 	
-	DrawDebugSphere(GetWorld(), PlayerLocation, InteractionRadius, 16.f, FColor::White, false);
+	if (bDebugEnabled)
+	{
+		if (SelectedActor)
+		{
+			DrawDebugBox(GetWorld(), SelectedActor->GetActorLocation(), FVector{DEBUG_BOX_EXTENT + 10.f}, FColor::Green, false);
+		}
+	
+		DrawDebugSphere(GetWorld(), PlayerLocation, InteractionRadius, 16.f, FColor::White, false);
+	}
 }
 
