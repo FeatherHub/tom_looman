@@ -12,14 +12,20 @@ class ACTIONROGUELIKE_API URogueInteractionComponent : public UActorComponent
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category=Interaction)
-	float InteractionRadius = 800.f;
+	float InteractionRadius;
+
+	UPROPERTY(EditDefaultsOnly, Category=Interaction)
+	float DistanceWeightScale;
+
+	UPROPERTY(EditDefaultsOnly, Category=Interaction)
+	float DirectionWeightScale;
 	
 	UPROPERTY()
 	TObjectPtr<AActor> SelectedActor;
 	
 public:
 	URogueInteractionComponent();
-	void Interact();
-	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	
+	void Interact();
 };

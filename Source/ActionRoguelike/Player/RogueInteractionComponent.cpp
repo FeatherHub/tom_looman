@@ -5,25 +5,24 @@
 #include "Engine/OverlapResult.h"
 
 
-TAutoConsoleVariable<bool> CVarInteractionDebugDraw{TEXT("rogue.interaction.Debugdraw"), false, TEXT("Enable interation debug draw. (0 = Off, 1 = On)"), ECVF_Cheat};
+TAutoConsoleVariable<bool> CVarInteractionDebugDraw{
+	TEXT("rogue.interaction.Debugdraw"), true,
+	TEXT("Enable interation debug draw. (0 = Off, 1 = On)"), ECVF_Cheat
+};
+
 const float DEBUG_BOX_EXTENT = 50.f;
 
 URogueInteractionComponent::URogueInteractionComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+
+	InteractionRadius = 800.f;
+	DistanceWeightScale = 2.f;
+	DirectionWeightScale = 1.f;
 }
 
 void URogueInteractionComponent::Interact()
 {
-	// To call purely C++ interface
-	// IRogueInteractionInterface* InteractionInterface = Cast<IRogueInteractionInterface>(SelectedActor);
-	// if (InteractionInterface)
-	// {
-	// 	InteractionInterface->Interact();
-	// }
-	
-	
-	// To call BlueprintNativeEvent interface
 	if (SelectedActor)
 	{
 		IRogueInteractionInterface::Execute_Interact(SelectedActor);
@@ -40,52 +39,72 @@ void URogueInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickT
 	{
 		return;
 	}
-	
-	FVector PlayerLocation = PlayerPawn->GetActorLocation();
-	
+
+	const bool bDebugEnabled = CVarInteractionDebugDraw.GetValueOnGameThread();
+
+	FVector ControllerDirection = PC->GetControlRotation().Vector();
+	FVector EyeLocation = PC->PlayerCameraManager->GetCameraLocation();
+	float MaxDistanceSqrd = InteractionRadius * InteractionRadius;
+
 	TArray<FOverlapResult> Overlaps;
 	FCollisionShape CollisionShape;
 	CollisionShape.SetSphere(InteractionRadius);
-	GetWorld()->OverlapMultiByChannel(Overlaps, PlayerLocation, FQuat::Identity,  RogueCollision::Trace::Interaction, CollisionShape);
-	
-	const bool bDebugEnabled = CVarInteractionDebugDraw.GetValueOnGameThread();
-	
-	float HighestDotResult = -1;
-	AActor* BestActor = nullptr;
-	
+	GetWorld()->OverlapMultiByChannel(Overlaps, EyeLocation, FQuat::Identity, RogueCollision::Trace::Interaction, CollisionShape);
+
+	// Weight range is [0,1]
+	float HighestWeight = 0;
+	AActor* BestCandidate = nullptr;
+
 	for (FOverlapResult& Overlap : Overlaps)
 	{
-		FVector OverlapLocation = Overlap.GetActor()->GetActorLocation();
-		
-		FVector ControllerDirection = PC->GetControlRotation().Vector();
-		FVector TargetDirection = (OverlapLocation - PlayerLocation).GetSafeNormal();
-		
-		float DotResult = FVector::DotProduct(ControllerDirection, TargetDirection);
+		FVector OverlapLocation;
+		FVector OverlapExtent;
+		Overlap.GetActor()->GetActorBounds(true, OverlapLocation, OverlapExtent);
 
-		if (DotResult > HighestDotResult)
+		float Distance = FVector::DistSquared(PlayerPawn->GetActorLocation(), OverlapLocation);
+
+		// normalize to [0,1]. closer distance gets the higher value
+		float NormalizedDistance = 1.f - (Distance / MaxDistanceSqrd);
+
+		FVector TargetDirection = (OverlapLocation - EyeLocation).GetSafeNormal();
+		float Dot = FVector::DotProduct(ControllerDirection, TargetDirection);
+
+		// normalize to [0,1]
+		float NormalizedDot = Dot * 0.5f + 0.5f;
+
+		float Weight = (NormalizedDot * DirectionWeightScale) + (NormalizedDistance * DistanceWeightScale);
+
+		if (Weight > HighestWeight)
 		{
-			HighestDotResult = DotResult;
-			BestActor = Overlap.GetActor();
-		}		
+			HighestWeight = Weight;
+			BestCandidate = Overlap.GetActor();
+		}
 		
+#if !UE_BUILD_SHIPPING
 		if (bDebugEnabled)
 		{
 			DrawDebugBox(GetWorld(), OverlapLocation, FVector{DEBUG_BOX_EXTENT}, FColor::Red, false);
-			FString DebugString = FString::Printf(TEXT("%f"), DotResult);
-			DrawDebugString(GetWorld(), OverlapLocation, DebugString, nullptr, FColor::White, 0, true);
+			
+			DrawDebugString(GetWorld(), OverlapLocation, FString::Printf(TEXT("Weight: %f Dot: %f Dist: %f"), Weight, NormalizedDot, NormalizedDistance), 
+				nullptr, FColor::White, 0, true);
 		}
-	}	
+#endif
+	}
+
+	SelectedActor = BestCandidate;
 	
-	SelectedActor = BestActor;
-	
+#if !UE_BUILD_SHIPPING
 	if (bDebugEnabled)
 	{
 		if (SelectedActor)
 		{
-			DrawDebugBox(GetWorld(), SelectedActor->GetActorLocation(), FVector{DEBUG_BOX_EXTENT + 10.f}, FColor::Green, false);
+			FVector Origin;
+			FVector Extent;
+			SelectedActor->GetActorBounds(true, Origin, Extent);
+			DrawDebugBox(GetWorld(), Origin, FVector{DEBUG_BOX_EXTENT + 10.f}, FColor::Green, false);
 		}
-	
-		DrawDebugSphere(GetWorld(), PlayerLocation, InteractionRadius, 16.f, FColor::White, false);
-	}
-}
 
+		DrawDebugSphere(GetWorld(), EyeLocation, InteractionRadius, 16.f, FColor::White, false);
+	}
+#endif
+}
