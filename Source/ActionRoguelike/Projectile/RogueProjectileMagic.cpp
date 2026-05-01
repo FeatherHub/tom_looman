@@ -14,6 +14,8 @@ void ARogueProjectileMagic::PostInitializeComponents()
 
 void ARogueProjectileMagic::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	Super::OnHit(HitComponent, OtherActor, OtherComp, NormalImpulse, Hit);
+	
 	Explode();
 	
 	FVector HitFromDirection = GetActorRotation().Vector();
