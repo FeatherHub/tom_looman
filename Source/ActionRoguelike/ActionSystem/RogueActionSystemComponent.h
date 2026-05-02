@@ -10,10 +10,17 @@ struct FAttributeSet
 {
 	GENERATED_BODY()
 	
-	FAttributeSet(): Health(100.f) {}
+	FAttributeSet()
+	{
+		MaxHealth = 100.f;
+		Health = MaxHealth;
+	}
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float Health;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float MaxHealth;
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, NewHealth, float, OldHealth);

@@ -4,8 +4,7 @@
 bool URogueActionSystemComponent::ApplyHealthChange(float InHealthDelta)
 {
 	float OldHealth = AttributeSet.Health; 
-	float MaxHealth = GetDefault<URogueActionSystemComponent>()->AttributeSet.Health;
-	float NewHealth = FMath::Clamp(AttributeSet.Health + InHealthDelta, 0.f, MaxHealth);
+	float NewHealth = FMath::Clamp(AttributeSet.Health + InHealthDelta, 0.f, AttributeSet.MaxHealth);
 	
 	if (!FMath::IsNearlyEqual(OldHealth, NewHealth))
 	{
@@ -14,6 +13,6 @@ bool URogueActionSystemComponent::ApplyHealthChange(float InHealthDelta)
 		return true;
 	}
 	
-	UE_LOG(LogTemp, Log, TEXT("[HEALTH] Max: %-6.1f, New: %-6.1f, Delta: %-6.1f"), MaxHealth, NewHealth, InHealthDelta);
+	UE_LOG(LogTemp, Log, TEXT("[HEALTH] Max: %-6.1f, New: %-6.1f, Delta: %-6.1f"), AttributeSet.MaxHealth, NewHealth, InHealthDelta);
 	return false;
 }
