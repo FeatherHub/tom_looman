@@ -21,6 +21,8 @@ ARogueExplosiveBarrel::ARogueExplosiveBarrel()
 	ExplodeRadialForceComp->SetupAttachment(RootComponent);
 	
 	ExplodeDelay = 2.f;
+
+	SMComp->SetCanEverAffectNavigation(false);
 }
 
 void ARogueExplosiveBarrel::PostInitializeComponents()
