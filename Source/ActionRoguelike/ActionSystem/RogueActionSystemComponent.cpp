@@ -1,7 +1,7 @@
 ﻿#include "RogueActionSystemComponent.h"
 
 
-void URogueActionSystemComponent::ApplyHealthChange(float InHealthDelta)
+bool URogueActionSystemComponent::ApplyHealthChange(float InHealthDelta)
 {
 	float OldHealth = AttributeSet.Health; 
 	float MaxHealth = GetDefault<URogueActionSystemComponent>()->AttributeSet.Health;
@@ -11,7 +11,9 @@ void URogueActionSystemComponent::ApplyHealthChange(float InHealthDelta)
 	{
 		AttributeSet.Health = NewHealth;
 		OnHealthChanged.Broadcast(NewHealth, OldHealth);
+		return true;
 	}
 	
 	UE_LOG(LogTemp, Log, TEXT("[HEALTH] Max: %-6.1f, New: %-6.1f, Delta: %-6.1f"), MaxHealth, NewHealth, InHealthDelta);
+	return false;
 }

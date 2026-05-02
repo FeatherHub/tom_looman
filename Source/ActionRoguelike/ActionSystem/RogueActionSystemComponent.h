@@ -32,5 +32,5 @@ protected:
 	FAttributeSet AttributeSet;
 	
 public:
-	void ApplyHealthChange(float InHealthDelta);	
+	bool ApplyHealthChange(float InHealthDelta);	
 };

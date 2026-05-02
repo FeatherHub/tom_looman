@@ -10,7 +10,11 @@ namespace RogueCollision
 
 	namespace Profile
 	{
+		// Project defined
 		inline const FName Projectile = FName(TEXT("Projectile"));
+		inline const FName Pickup = FName(TEXT("Pickup"));
+		
+		// Engine Default
 		inline const FName OverlapAll = FName(TEXT("OverlapAll"));
 	}
 }
