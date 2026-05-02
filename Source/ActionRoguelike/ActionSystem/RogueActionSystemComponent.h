@@ -5,6 +5,8 @@
 #include "RogueActionSystemComponent.generated.h"
 
 
+class URogueActionSystemComponent;
+
 USTRUCT(Blueprintable)
 struct FAttributeSet
 {
@@ -39,5 +41,8 @@ protected:
 	FAttributeSet AttributeSet;
 	
 public:
-	bool ApplyHealthChange(float InHealthDelta);	
+	bool ApplyHealthChange(float InHealthDelta);
+	float GetCurrentHealth() { return AttributeSet.Health; }
+	float GetMaxHealth() { return AttributeSet.MaxHealth; }
+	bool IsHealthFull() { return FMath::IsNearlyEqual(AttributeSet.Health, AttributeSet.MaxHealth); }
 };
