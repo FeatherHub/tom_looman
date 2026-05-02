@@ -15,6 +15,7 @@ ARoguePotionBase::ARoguePotionBase()
 	MeshComp->SetupAttachment(SphereComp);
 
 	SphereComp->SetCollisionProfileName(RogueCollision::Profile::Pickup);
+	MeshComp->SetCollisionProfileName(RogueCollision::Profile::NoCollision);
 }
 
 void ARoguePotionBase::PostInitializeComponents()

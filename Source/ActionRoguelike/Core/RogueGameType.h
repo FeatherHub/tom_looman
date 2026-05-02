@@ -16,5 +16,6 @@ namespace RogueCollision
 		
 		// Engine Default
 		inline const FName OverlapAll = FName(TEXT("OverlapAll"));
+		inline const FName NoCollision = FName(TEXT("NoCollision"));
 	}
 }
