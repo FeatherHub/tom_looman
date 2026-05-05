@@ -5,6 +5,7 @@
 #include "RogueActionSystemComponent.generated.h"
 
 
+class URogueAction;
 class URogueActionSystemComponent;
 
 USTRUCT(Blueprintable)
@@ -40,7 +41,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Attribute)
 	FAttributeSet AttributeSet;
 	
+	UPROPERTY(EditDefaultsOnly, Category=Action)
+	TArray<TObjectPtr<URogueAction>> Actions;
+	
 public:
+	URogueActionSystemComponent();
+	virtual void InitializeComponent() override;
+	void StartAction(FName ActionName);
+	
 	bool ApplyHealthChange(float InHealthDelta);
 	float GetCurrentHealth() { return AttributeSet.Health; }
 	float GetMaxHealth() { return AttributeSet.MaxHealth; }

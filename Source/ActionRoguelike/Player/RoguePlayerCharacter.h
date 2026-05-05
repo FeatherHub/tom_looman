@@ -84,6 +84,7 @@ protected:
 	void StartSpawn(TSubclassOf<ARogueProjectileBase> ProjectileClass);
 	void SpawnProjectile(TSubclassOf<ARogueProjectileBase> ProjectileClass);
 	
+	void StartAction(FName ActionName);
 	
 	UFUNCTION()
 	void OnHealthChanged(float NewHealth, float OldHealth);

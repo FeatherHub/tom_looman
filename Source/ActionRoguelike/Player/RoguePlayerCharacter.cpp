@@ -45,7 +45,7 @@ void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	EIC->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ThisClass::Move);
 	EIC->BindAction(IA_Look, ETriggerEvent::Triggered, this, &ThisClass::Look);
 	EIC->BindAction(IA_Jump, ETriggerEvent::Triggered, this, &ThisClass::Jump);
-	EIC->BindAction(IA_PrimaryAttack, ETriggerEvent::Triggered, this, &ThisClass::StartSpawn, ProjectileMagicClass);
+	EIC->BindAction(IA_PrimaryAttack, ETriggerEvent::Triggered, this, &ThisClass::StartAction, FName(TEXT("PrimaryAttack")));
 	EIC->BindAction(IA_BlackholeAttack, ETriggerEvent::Triggered, this, &ThisClass::StartSpawn, ProjectileBlackholeClass);
 	EIC->BindAction(IA_Teleport, ETriggerEvent::Triggered, this, &ThisClass::StartSpawn, ProjectileTeleportClass);
 }
@@ -139,6 +139,11 @@ void ARoguePlayerCharacter::SpawnProjectile(TSubclassOf<ARogueProjectileBase> Pr
 		DrawDebugBox(GetWorld(), TraceEnd, FVector{20.f}, FColor::Green, false, DebugDrawTime);
 	}
 #endif
+}
+
+void ARoguePlayerCharacter::StartAction(FName ActionName)
+{
+	ActionSystemComp->StartAction(ActionName);
 }
 
 void ARoguePlayerCharacter::OnHealthChanged(float NewHealth, float OldHealth)

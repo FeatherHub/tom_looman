@@ -1,5 +1,35 @@
 ﻿#include "RogueActionSystemComponent.h"
 
+#include "URogueAction.h"
+
+
+URogueActionSystemComponent::URogueActionSystemComponent()
+{
+	bWantsInitializeComponent = true;
+}
+
+void URogueActionSystemComponent::InitializeComponent()
+{
+	Super::InitializeComponent();
+	
+	URogueAction* Action = NewObject<URogueAction>(this, URogueAction::StaticClass());
+	
+	Actions.Add(Action);
+}
+
+void URogueActionSystemComponent::StartAction(FName ActionName)
+{
+	for (URogueAction* Action : Actions)
+	{
+		if (ActionName == Action->GetActionName())
+		{
+			Action->StartAction();
+			return;
+		}
+	}
+	
+	UE_LOGFMT(LogTemp, Warning, "Failed to Start Action '{ActionName}'", ActionName);
+}
 
 bool URogueActionSystemComponent::ApplyHealthChange(float InHealthDelta)
 {
